@@ -57,7 +57,3 @@ class UserFollowersSchema(Schema):
     user_follower = fields.Nested(UserFollowerSchema(many=True))
     user_followed = fields.Nested(UserFollowerSchema(many=True))
 
-
-class UserFollowedSchema(Schema):
-    username = fields.Str()
-    followed = fields.Nested(UserFollowerSchema(many=True))
