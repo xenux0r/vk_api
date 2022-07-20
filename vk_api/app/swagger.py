@@ -8,15 +8,14 @@ api = Api(version='1.0', title='API VK',
           )
 
 group = api.model('GroupSchema', {
-        'id': fields.Integer,
-        'name': fields.String
+        'group_id': fields.Integer
 })
 
 create_group = api.model('CreateGroupSchema', {
         'name': fields.String
 })
 
-user = api.model('UserSchema', {
+create_user = api.model('CreateUserSchema', {
         'username': fields.String,
         'password': fields.String
 })
@@ -25,7 +24,6 @@ user_group = api.model('UserGroupsSchema', {
         'groups': fields.Nested(group, as_list=True)
 })
 
-user_subscribe = api.model('UserFollowerSchema', {
-        'id': fields.Integer,
-        'username': fields.String
+user_actions = api.model('UserActionsSchema', {
+        'user_id': fields.Integer
 })

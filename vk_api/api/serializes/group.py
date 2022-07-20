@@ -9,20 +9,33 @@ class InGroup:
 
 
 @dataclass
-class CreateGroup:
+class FollowGroup:
+    id: int
+
+
+@dataclass
+class ActionsGroup:
     name: str
 
 
-class CreateGroupSchema(Schema):
+class ActionsGroupSchema(Schema):
     name = fields.Str()
 
     @post_load
     def convert_to_dataclass(self, data, **kwargs):
-        return CreateGroup(**data)
+        return ActionsGroup(**data)
+
+
+class FollowGroupSchema(Schema):
+    id = fields.Int(data_key="group_id")
+
+    @post_load
+    def convert_to_dataclass(self, data, **kwargs):
+        return FollowGroup(**data)
 
 
 class GroupSchema(Schema):
-    id = fields.Int()
+    id = fields.Int(data_key="group_id")
     name = fields.Str()
 
     @post_load

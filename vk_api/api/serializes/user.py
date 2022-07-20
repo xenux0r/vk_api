@@ -10,21 +10,11 @@ class CreateUser:
 
 
 @dataclass
-class InBodyUser:
-    username: str
+class UserActions:
     id: str
 
 
-class UserSubSchema(Schema):
-    id = fields.Int()
-    username = fields.Str()
-
-    @post_dump
-    def convert_to_json(self, data, **kwargs):
-        return InBodyUser(**data)
-
-
-class UserSchema(Schema):
+class CreateUserSchema(Schema):
     username = fields.Str()
     password = fields.Str()
 
@@ -33,7 +23,7 @@ class UserSchema(Schema):
         return CreateUser(**data)
 
     @post_dump
-    def convert_to_json(self, data, **kwargs):
+    def convert_security(self, data, **kwargs):
         del data["password"]
         return data
 
@@ -43,17 +33,17 @@ class UserGroupsSchema(Schema):
     groups = fields.Nested(GroupSchema(many=True))
 
 
-class UserFollowerSchema(Schema):
-    id = fields.Int()
+class UserActionsSchema(Schema):
+    id = fields.Int(data_key="user_id")
     username = fields.Str()
 
     @post_load
     def convert_to_dataclass(self, data, **kwargs):
-        return InBodyUser(**data)
+        return UserActions(**data)
 
 
-class UserFollowersSchema(Schema):
+class UserActivitySchema(Schema):
     username = fields.Str()
-    user_follower = fields.Nested(UserFollowerSchema(many=True))
-    user_followed = fields.Nested(UserFollowerSchema(many=True))
+    user_follower = fields.Nested(UserActionsSchema(many=True))
+    user_followed = fields.Nested(UserActionsSchema(many=True))
 

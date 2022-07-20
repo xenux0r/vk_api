@@ -1,10 +1,12 @@
 import flask
+from sqlalchemy.exc import IntegrityError
 from vk_api.api.models.base import db
-from vk_api.api.serializes.group import GroupSchema, CreateGroupSchema
+from vk_api.api.serializes.group import GroupSchema, ActionsGroupSchema
 from vk_api.api.models.group import Group
 from flask_restx import Resource, fields, Namespace
 from vk_api.app.swagger import create_group
 from vk_api.api.security.base import token_required, current_user
+from vk_api.app.error.error import make_error
 
 api_group = Namespace('api/group', description='Создание и получение групп')
 
@@ -26,8 +28,12 @@ class Groups(Resource):
         """
         Добавить группу.
         """
-        params = CreateGroupSchema().load(flask.request.json)
+        params = ActionsGroupSchema().load(flask.request.json)
         new_group = Group(name=params.name)
-        db.session.add(new_group)
-        db.session.commit()
+        try:
+            db.session.add(new_group)
+            db.session.commit()
+        except IntegrityError as e:
+            if e.orig.pgcode in ['23505']:
+                return make_error(status_code=406, message="Группа уже существует")
         return flask.jsonify(GroupSchema().dump(new_group))
