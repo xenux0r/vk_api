@@ -16,12 +16,12 @@ def token_required(f):
             token = flask.request.headers['X-API-Key']
 
         if not token:
-            return flask.jsonify({'message': 'a valid token is missing'})
+            return flask.jsonify({'message': 'Отсутствует действительный токен'})
         try:
             data = jwt.decode(token, flask.current_app.config['SECRET_KEY'], algorithms=["HS256"])
             flask._request_ctx_stack.top.current_user = User.query.filter_by(id=data['identity']).first()
         except:
-            return flask.jsonify({'message': 'token is invalid'})
+            return flask.jsonify({'message': 'Токен недействителен'})
 
         return f(*args, **kwargs)
 
