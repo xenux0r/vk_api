@@ -29,7 +29,7 @@ class SignupUser(Resource):
         return flask.jsonify({'message': 'registered successfully'})
 
 
-@api_auth.route('/login')
+@api_auth.route('/auth')
 class LoginUser(Resource):
     @api_auth.expect(user)
     def post(self):
