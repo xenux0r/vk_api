@@ -12,7 +12,7 @@ def token_required(f):
     @wraps(f)
     def decorator(*args, **kwargs):
         token = None
-        if 'X-API-Key' in flask.request.headers:
+        if flask.current_app.config["JWT_AUTH_HEADER_PREFIX"] in flask.request.headers:
             token = flask.request.headers['X-API-Key']
 
         if not token:
