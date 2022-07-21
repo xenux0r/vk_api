@@ -135,7 +135,7 @@ class AllUsersGroup(Resource):
         return flask.jsonify(UserGroupsSchema().dump(_user))
 
 
-@api_user.route('/<int:user_id>/user')
+@api_user.route('/<int:user_id>/user/follow')
 class SubscribeUser(Resource):
     @api_user.doc(security="apiKey")
     def get(self, user_id):
