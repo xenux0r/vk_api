@@ -3,9 +3,9 @@ from sqlalchemy.exc import IntegrityError
 from vk_api.api.models.base import db
 from vk_api.api.serializes.group import GroupSchema, ActionsGroupSchema
 from vk_api.api.models.group import Group
-from flask_restx import Resource, fields, Namespace
+from flask_restx import Resource, Namespace
 from vk_api.app.swagger import create_group
-from vk_api.api.security.base import token_required, current_user
+from vk_api.api.security.base import token_required
 from vk_api.app.error.error import make_error
 
 api_group = Namespace('api/group', description='Создание и получение групп')
