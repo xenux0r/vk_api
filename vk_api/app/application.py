@@ -8,9 +8,7 @@ from vk_api.app.swagger import api
 
 def create_app():
     app = flask.Flask(__name__)
-    @app.errorhandler(404)
-    def not_found(error):
-        return flask.make_response(flask.jsonify({'error': 'Not found'}), 404)
+
     app.config.from_pyfile('config..py')
     db.init_app(app)
     migrate.init_app(app, db)
